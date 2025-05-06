@@ -21,6 +21,9 @@ def add_task():
     if not new_task:
         print("Invalid input\n")
         return
+    if new_task in tasks:
+        print("Task already exists")
+        return
     tasks[new_task] = "Incomplete"
     print(f"{new_task} was added to list\n")
 
@@ -38,9 +41,12 @@ def view_tasks():
 
 def delete_task():
     """Deletes a task from \"Tasks\" list by task number that appears in \"view_tasks()\""""
-
-    task = int(input("Task number to delete: "))-1
-    if task<0 or task>len(tasks):
+    try:
+        task = int(input("Task number to delete: "))-1
+    except ValueError:
+        print("Invalid input. Try again\n")
+        return
+    if task<0 or task>=len(tasks):
         print("Invalid task number\n")
         return
     key_del = list(tasks)[task]
@@ -49,8 +55,13 @@ def delete_task():
 def confirm_task():
     """Changes status of a task from \"Incomplete\" to \"Complete\""""
 
-    task_num = int(input("What task number should be marked as complete\n"))-1
-    if task_num<0 or task_num>len(tasks):
+    try:
+        task_num = int(input("What task number should be marked as complete\n"))-1
+    except ValueError:
+        print("Invalid input. Try again\n")
+        return
+
+    if task_num<0 or task_num>=len(tasks):
         print("Invalid task number\n")
         return
     key_confirm = list(tasks)[task_num]
