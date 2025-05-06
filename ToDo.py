@@ -17,8 +17,8 @@ def print_menu():
 def add_task():
     """Adds new task to \"tasks\" list"""
 
-    new_task = input("Enter new task:\n")
-    if not isinstance(new_task,str):
+    new_task = input("Enter new task:\n").strip()
+    if not new_task:
         print("Invalid input\n")
         return
     tasks[new_task] = "Incomplete"
@@ -30,6 +30,7 @@ def view_tasks():
 
     if len(tasks)==0:
         print("No tasks to output\n")
+        return
     i = 1
     for key,value in tasks.items():
         print(f"Task {i}: Name - \"{key}\" Status - {value}\n")
@@ -39,7 +40,7 @@ def delete_task():
     """Deletes a task from \"Tasks\" list by task number that appears in \"view_tasks()\""""
 
     task = int(input("Task number to delete: "))-1
-    if 0>task>len(tasks):
+    if task<0 or task>len(tasks):
         print("Invalid task number\n")
         return
     key_del = list(tasks)[task]
@@ -49,7 +50,7 @@ def confirm_task():
     """Changes status of a task from \"Incomplete\" to \"Complete\""""
 
     task_num = int(input("What task number should be marked as complete\n"))-1
-    if 0 > task_num > len(tasks):
+    if task_num<0 or task_num>len(tasks):
         print("Invalid task number\n")
         return
     key_confirm = list(tasks)[task_num]
@@ -72,7 +73,12 @@ def output_tasks():
 curr_status=-1
 while curr_status != 6:
     print_menu()
-    curr_status=int(input("Pick an option: \n"))
+    #Catch invalid input
+    try:
+        curr_status=int(input("Pick an option: \n"))
+    except ValueError:
+        print("Invalid input. Try again\n")
+        continue
     if curr_status==1:
         add_task()
         time.sleep(1)
